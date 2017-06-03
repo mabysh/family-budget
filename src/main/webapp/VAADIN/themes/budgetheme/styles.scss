@@ -1,0 +1,41 @@
+@import "budgetheme.scss";
+@import "addons.scss";
+
+// This file prefixes all rules with the theme name to avoid causing conflicts with other themes.
+// The actual styles should be defined in budgetheme.scss
+
+.budgetheme {
+  @include addons;
+  @include budgetheme;
+
+	.menu {
+        background: #323c44;
+        color: text-color($vaadin-primary-color);
+
+        .v-button {
+            display: block;
+        }
+
+        .menubutton {
+            color: #9ca9bc;
+            text-align: left;
+        }
+
+        .menubutton_clicked {
+            color: #323c44;
+            border-radius: 0px;
+            background: #9ca9bc;
+        }
+		.menubutton_clicked:after {
+			content: none;
+        }
+    }
+
+	.content {
+        border-radius: 0px;
+        background: $v-background-color;
+    }
+    
+    .text-align-center {
+    }
+}
