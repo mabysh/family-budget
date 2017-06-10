@@ -1,7 +1,5 @@
 package org.mabysh.familybudget.backend.service;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -19,12 +17,7 @@ public class AccountService {
 	EntityManager em;
 	
 	public AccountService() { }
-	
-	@Transactional
-	public List<Account> findAllAccounts() {
-	    return em.createQuery("FROM Account", Account.class).getResultList();
-	}
-	
+
 	@Transactional
 	public Wallet findWallet(Long id) {
 		return em.find(Wallet.class, id);
@@ -40,7 +33,8 @@ public class AccountService {
 		try {
 			Account result = em.createQuery("SELECT a FROM Account a WHERE a.login=:accLogin AND a.password=:accPassword", Account.class)
 					.setParameter("accLogin", account.getLogin())
-					.setParameter("accPassword", account.getPassword()).getSingleResult();
+					.setParameter("accPassword", account.getPassword())
+					.getSingleResult();
 			return result;
 		} catch (NoResultException e) {
 			return null;

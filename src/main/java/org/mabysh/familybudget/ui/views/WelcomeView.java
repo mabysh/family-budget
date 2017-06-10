@@ -1,7 +1,5 @@
 package org.mabysh.familybudget.ui.views;
 
-import java.time.format.SignStyle;
-
 import javax.annotation.PostConstruct;
 
 import org.mabysh.familybudget.backend.entity.Account;
@@ -12,11 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.UserError;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.Button;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
@@ -57,12 +54,14 @@ public class WelcomeView extends VerticalLayout implements View {
 		});
 		
 		addComponents(l1, signField);
+		setComponentAlignment(l1, Alignment.TOP_CENTER);
+		setComponentAlignment(signField, Alignment.TOP_CENTER);
 	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		ui.setButtonsEnabled(ui.getCurrentAccount() != null);
-		ui.setWelcomeButtonCaption("Welcome");
+		ui.setMenuVisible(false);
+		signField.clear();
 	}
 
 }

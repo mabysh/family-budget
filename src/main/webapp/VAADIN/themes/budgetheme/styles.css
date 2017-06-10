@@ -12530,3 +12530,7 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	background: #fafafa;
 }
+
+.budgetheme .v-Notification {
+	border: 3px solid #9ca9bc;
+}

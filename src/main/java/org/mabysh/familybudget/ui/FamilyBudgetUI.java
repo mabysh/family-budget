@@ -1,8 +1,8 @@
 package org.mabysh.familybudget.ui;
 
-import java.util.Collection;
-
 import org.mabysh.familybudget.backend.entity.Account;
+import org.mabysh.familybudget.backend.entity.Wallet;
+import org.mabysh.familybudget.backend.service.AccountService;
 import org.mabysh.familybudget.ui.views.BalanceView;
 import org.mabysh.familybudget.ui.views.OperationsView;
 import org.mabysh.familybudget.ui.views.StatisticsView;
@@ -10,6 +10,7 @@ import org.mabysh.familybudget.ui.views.WelcomeView;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Title;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
@@ -27,6 +28,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
+@Title("Family Budget")
 @Theme("budgetheme")
 @SpringUI
 @SpringViewDisplay
@@ -35,7 +37,12 @@ public class FamilyBudgetUI extends UI implements ViewDisplay {
 	@Autowired
 	private SpringViewProvider viewProvider;
 	
+	@Autowired
+	private AccountService accountService;	
+
 	private Account currentAccount;
+	private Wallet currentWallet;
+	private boolean walletUpdated = false;
 	
 	private Navigator navigator;
 	private HorizontalSplitPanel rootPanel;
@@ -60,6 +67,7 @@ public class FamilyBudgetUI extends UI implements ViewDisplay {
 		rootPanel.setSizeFull();
 		rootPanel.setSplitPosition(180, Unit.PIXELS);
 		rootPanel.setFirstComponent(menu);
+		rootPanel.setLocked(true);
 		rootPanel.addStyleName(ValoTheme.PANEL_BORDERLESS);
 		
 		content.addStyleName("content");
@@ -144,25 +152,35 @@ public class FamilyBudgetUI extends UI implements ViewDisplay {
 	@Override
 	public void showView(View view) {
 		content.setContent((Component) view);
-		
 	}
 	
 	public void setCurrentAccount(Account account) {
 		this.currentAccount = account;
+		this.currentWallet = accountService.findWallet(account.getId());
 	}
 	
 	public Account getCurrentAccount() {
 		return currentAccount;
 	}
 	
-	public void setButtonsEnabled(boolean b) {
-		main.setEnabled(b);
-		operations.setEnabled(b);
-		statistic.setEnabled(b);
+	public Wallet getCurrentWallet() {
+		return currentWallet;
 	}
 	
-	public void setWelcomeButtonCaption(String caption) {
-		accounts.setCaption(caption);
+	public void setMenuVisible(boolean b) {
+		if (b == true) {
+			rootPanel.setSplitPosition(180, Unit.PIXELS);
+		} else {
+			rootPanel.setSplitPosition(0, Unit.PIXELS);
+		}
+			rootPanel.getFirstComponent().setVisible(b);
 	}
-
+	
+	public boolean isWalletUpdated() {
+		return walletUpdated;
+	}
+	
+	public void setWalletUpadted(boolean walletUpdated) {
+		this.walletUpdated = walletUpdated;
+	}
 }

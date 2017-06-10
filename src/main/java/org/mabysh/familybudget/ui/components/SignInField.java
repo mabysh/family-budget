@@ -58,6 +58,7 @@ public class SignInField extends CustomField<Account> {
 
 		configure();
 		
+		vl.setMargin(false);
 		return vl;
 	}
 
@@ -117,5 +118,12 @@ public class SignInField extends CustomField<Account> {
 		this.account = value == null ? new Account() : value;
 	}
 	
+	@Override
+	public void clear() {
+		loginField.clear();
+		loginField.setComponentError(null);
+		passField.clear();
+		passField.setComponentError(null);
+	}
 
 }

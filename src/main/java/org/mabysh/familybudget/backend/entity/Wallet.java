@@ -12,6 +12,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 
 @SuppressWarnings("serial")
@@ -21,6 +22,9 @@ public class Wallet implements Serializable, Cloneable{
 	
 	@Id
 	private Long id;
+	
+	@Version
+	private Long version;
 	
 	@OneToOne
 	@MapsId
@@ -119,5 +123,10 @@ public class Wallet implements Serializable, Cloneable{
         return hash;
 
 	}
+    
+    public Wallet() {
+    	this.inUse = 0L;
+    	this.postponed = 0L;
+    }
 	
 }

@@ -22,7 +22,7 @@ public class RegistrationField extends SignInField {
 	protected void configure() {
 		
 		confirmPassword.setDescription("Enter password again");
-		confirmPassword.setPlaceholder("Confirm Password");
+		confirmPassword.setPlaceholder("Confirm Password...");
 		confirmPassword.setWidth(100, Unit.PERCENTAGE);
 		
 		button = new Button("Register");
@@ -100,4 +100,13 @@ public class RegistrationField extends SignInField {
 		}
 	}
 	
+	@Override
+	public void clear() {
+		loginField.clear();
+		loginField.setComponentError(null);
+		passField.clear();
+		passField.setComponentError(null);
+		confirmPassword.clear();
+		confirmPassword.setComponentError(null);
+	}
 }
