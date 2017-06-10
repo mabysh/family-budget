@@ -42,7 +42,6 @@ public class FamilyBudgetUI extends UI implements ViewDisplay {
 
 	private Account currentAccount;
 	private Wallet currentWallet;
-	private boolean walletUpdated = false;
 	
 	private Navigator navigator;
 	private HorizontalSplitPanel rootPanel;
@@ -175,12 +174,5 @@ public class FamilyBudgetUI extends UI implements ViewDisplay {
 		}
 			rootPanel.getFirstComponent().setVisible(b);
 	}
-	
-	public boolean isWalletUpdated() {
-		return walletUpdated;
-	}
-	
-	public void setWalletUpadted(boolean walletUpdated) {
-		this.walletUpdated = walletUpdated;
-	}
+
 }

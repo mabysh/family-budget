@@ -1,11 +1,14 @@
 package org.mabysh.familybudget.backend.service;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import org.mabysh.familybudget.backend.entity.Account;
 import org.mabysh.familybudget.backend.entity.Wallet;
+import org.mabysh.familybudget.backend.entity.WalletOperation;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +49,18 @@ public class AccountService {
 		try {
 			Account result = em.createQuery("SELECT a FROM Account a WHERE a.login=:accLogin", Account.class)
 					.setParameter("accLogin", login).getSingleResult();
+			return result;
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+	
+	@Transactional
+	public List<WalletOperation> findAllWalletOperations(Long walletId) {
+		try {
+			List<WalletOperation> result = em.createQuery("SELECT o FROM WalletOperation o WHERE o.operationWallet=:walletId",
+					WalletOperation.class)
+					.setParameter("walletId", walletId).getResultList();
 			return result;
 		} catch (NoResultException e) {
 			return null;

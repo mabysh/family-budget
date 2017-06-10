@@ -32,6 +32,8 @@ public class BalanceView extends VerticalLayout implements View {
 	private Label income;
 	private Label consumption;
 	
+	private Long oldWalletVersion;
+	
 	@PostConstruct
 	public void init() {
 		Label l1 = new Label("Budget Balance");
@@ -47,8 +49,11 @@ public class BalanceView extends VerticalLayout implements View {
 	}
 
 	private void redrawBalanceView() {
-		if (ui.isWalletUpdated()) {
+		Long newVersion = ui.getCurrentWallet().getVersion();
+		if (oldWalletVersion == null || newVersion > oldWalletVersion) {
+			oldWalletVersion = newVersion;
 			
+			wallet.setCaption(String.valueOf(ui.getCurrentWallet().getInUse()));
 		}
 	}
 

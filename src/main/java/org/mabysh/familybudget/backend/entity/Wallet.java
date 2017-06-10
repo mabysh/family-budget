@@ -82,6 +82,10 @@ public class Wallet implements Serializable, Cloneable{
 	public void setPostponed(Long postponed) {
 		this.postponed = postponed;
 	}
+	
+	public Long getVersion() {
+		return version;
+	}
 
 	public List<WalletOperation> getOperationList() {
 		return operationList;
