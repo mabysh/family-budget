@@ -3,6 +3,7 @@ package org.mabysh.familybudget.backend.config;
 import java.util.Properties;
 
 import org.mabysh.familybudget.backend.service.AccountService;
+import org.mabysh.familybudget.backend.service.WalletManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -88,5 +89,9 @@ public class SpringConfiguration {
 	@Bean
 	public AccountService accountService() {
 		return new AccountService();
+	}
+	
+	@Bean WalletManager walletManager() {
+		return new WalletManager();
 	}
 }

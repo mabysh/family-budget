@@ -56,11 +56,11 @@ public class AccountService {
 	}
 	
 	@Transactional
-	public List<WalletOperation> findAllWalletOperations(Long walletId) {
+	public List<WalletOperation> findAllWalletOperations(Long accountId) {
 		try {
-			List<WalletOperation> result = em.createQuery("SELECT o FROM WalletOperation o WHERE o.operationWallet=:walletId",
+			List<WalletOperation> result = em.createQuery("SELECT o FROM WalletOperation o WHERE o.account=:accountId",
 					WalletOperation.class)
-					.setParameter("walletId", walletId).getResultList();
+					.setParameter("walletId", accountId).getResultList();
 			return result;
 		} catch (NoResultException e) {
 			return null;

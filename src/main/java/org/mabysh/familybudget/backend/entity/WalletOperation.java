@@ -25,8 +25,8 @@ public class WalletOperation implements Serializable, Cloneable{
     private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "wallet_id")
-	private Wallet operationWallet;
+	@JoinColumn(name = "account_id")
+	private Account account;
 	
 	private OperationType opType;
 	
@@ -58,12 +58,12 @@ public class WalletOperation implements Serializable, Cloneable{
 		this.opDateTime = c;
 	}
 
-	public Wallet getOperationWallet() {
-		return operationWallet;
+	public Account getAccount() {
+		return account;
 	}
 
-	public void setOperationWallet(Wallet operationWallet) {
-		this.operationWallet = operationWallet;
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
 	public OperationType getOpType() {
@@ -104,7 +104,8 @@ public class WalletOperation implements Serializable, Cloneable{
     
     @Override
     public String toString() {
-    	return "Operation id: " + getId() + ", type: " + getOpType() + ", wallet id: " + getOperationWallet().getId();
+    	return "Operation id: " + getId() + " | type: " + getOpType() + " | amount: " + getAmount()
+    		+ " | date/time: " + opDateTime.getTime();
     }
     
     public WalletOperation(Long amount, OperationType opType) {

@@ -30,27 +30,6 @@ public class Wallet implements Serializable, Cloneable{
 	@MapsId
 	private Account account;
 	
-	private Long inUse;
-	
-	private Long postponed;
-	
-	@OneToMany(
-			mappedBy = "operationWallet",
-			cascade = CascadeType.ALL,
-			orphanRemoval = true
-	)
-	private List<WalletOperation> operationList = new ArrayList<>();
-	
-	public void addOperation(WalletOperation wop) {
-		operationList.add(wop);
-		wop.setOperationWallet(this);
-	}
-	
-	public void removeOperation(WalletOperation wop) {
-		operationList.remove(wop);
-		wop.setOperationWallet(null);
-	}
-	
 	public Long getId() {
 		return id;
 	}
@@ -67,32 +46,9 @@ public class Wallet implements Serializable, Cloneable{
 		this.account = walletAccount;
 	}
 
-	public Long getInUse() {
-		return inUse;
-	}
 
-	public void setInUse(Long inUse) {
-		this.inUse = inUse;
-	}
-
-	public Long getPostponed() {
-		return postponed;
-	}
-
-	public void setPostponed(Long postponed) {
-		this.postponed = postponed;
-	}
-	
 	public Long getVersion() {
 		return version;
-	}
-
-	public List<WalletOperation> getOperationList() {
-		return operationList;
-	}
-
-	public void setOperationList(List<WalletOperation> operationList) {
-		this.operationList = operationList;
 	}
 
 	@Override
@@ -129,8 +85,6 @@ public class Wallet implements Serializable, Cloneable{
 	}
     
     public Wallet() {
-    	this.inUse = 0L;
-    	this.postponed = 0L;
     }
 	
 }

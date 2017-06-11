@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 @SuppressWarnings("serial")
 @Entity
@@ -17,6 +18,9 @@ public class Account implements Serializable, Cloneable{
     @GeneratedValue
     private Long id;
 	
+	@Version
+	private Long version;
+	
 	private String login;
 	
 	private String password;
@@ -26,7 +30,11 @@ public class Account implements Serializable, Cloneable{
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
+	public Long getVersion() {
+		return version;
+	}
+	
 	public String getLogin() {
 		return login;
 	}

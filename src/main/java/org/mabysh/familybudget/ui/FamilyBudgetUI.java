@@ -3,6 +3,7 @@ package org.mabysh.familybudget.ui;
 import org.mabysh.familybudget.backend.entity.Account;
 import org.mabysh.familybudget.backend.entity.Wallet;
 import org.mabysh.familybudget.backend.service.AccountService;
+import org.mabysh.familybudget.backend.service.WalletManager;
 import org.mabysh.familybudget.ui.views.BalanceView;
 import org.mabysh.familybudget.ui.views.OperationsView;
 import org.mabysh.familybudget.ui.views.StatisticsView;
@@ -38,10 +39,9 @@ public class FamilyBudgetUI extends UI implements ViewDisplay {
 	private SpringViewProvider viewProvider;
 	
 	@Autowired
-	private AccountService accountService;	
-
+	private WalletManager walletManager;
+	
 	private Account currentAccount;
-	private Wallet currentWallet;
 	
 	private Navigator navigator;
 	private HorizontalSplitPanel rootPanel;
@@ -155,15 +155,11 @@ public class FamilyBudgetUI extends UI implements ViewDisplay {
 	
 	public void setCurrentAccount(Account account) {
 		this.currentAccount = account;
-		this.currentWallet = accountService.findWallet(account.getId());
+		walletManager.initWallet(account.getId());
 	}
 	
 	public Account getCurrentAccount() {
 		return currentAccount;
-	}
-	
-	public Wallet getCurrentWallet() {
-		return currentWallet;
 	}
 	
 	public void setMenuVisible(boolean b) {
