@@ -1,6 +1,7 @@
 package org.mabysh.familybudget.backend.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.mabysh.familybudget.backend.entity.OperationType;
@@ -15,42 +16,29 @@ public class WalletManager {
 	
 	private List<WalletOperation> allOperations;
 	
-	private Long inUse = 0L;
+	private Calendar now = Calendar.getInstance();
+	
+	private Long available = 0L;
 	private Long postponed = 0L;
 	private Long income = 0L;
-	private Long expense = 0L;
+	private Long expenses = 0L;
 	
 
 	@Autowired
-	private static AccountService accountService;
+	private AccountService accountService;
 
 	public void initWallet(Long accountId) {
 		currentWallet = accountService.findWallet(accountId);
 		currentVersion = currentWallet.getVersion();
 		allOperations = accountService.findAllWalletOperations(currentWallet.getId());
-		if (allOperations == null) {
-			allOperations = new ArrayList<WalletOperation>();
+		if (allOperations.isEmpty()) {
+			return;
 		}
-		
-		for (WalletOperation wop : allOperations) {
-			Long amount = wop.getAmount();
-			switch (wop.getOpType()) {
-			case WITHDRAW : 
-				expense += amount;
-				inUse -= amount;
-				break;
-			case DEPOSIT :
-				income += amount;
-				inUse += amount;
-				break;
-			case POSTPONE :
-				postponed += amount;
-				inUse -= amount;
-				break;
-			case UNDEFINED :
-				break;
-			}
-		}
+		WalletOperation last = allOperations.get(allOperations.size() - 1);
+		this.available = last.getAvailabe();
+		this.postponed = last.getPostponed();
+		this.income = last.getIncome();
+		this.expenses = last.getExpenses();
 	}
 	
 	private void updateCurrentWallet() {
@@ -61,23 +49,32 @@ public class WalletManager {
 	
 	public void addOperation(OperationType opType, Long amount) {
 		WalletOperation newOperation = new WalletOperation(amount, opType);
-		allOperations.add(newOperation);
+	
 		switch (opType) {
 		case WITHDRAW : 
-			expense += amount;
-			inUse -= amount;
+			expenses += amount;
+			available -= amount;
 			break;
 		case DEPOSIT :
 			income += amount;
-			inUse += amount;
+			available += amount;
 			break;
 		case POSTPONE :
 			postponed += amount;
-			inUse -= amount;
+			available -= amount;
 			break;
 		case UNDEFINED :
 			break;
 		}
+		newOperation.setWallet(currentWallet);
+		newOperation.setAvailable(available);
+		newOperation.setPostponed(postponed);
+		newOperation.setIncome(income);
+		newOperation.setExpenses(expenses);
+		accountService.saveWalletOperation(newOperation);
+		allOperations.add(accountService.findWalletOperationByCalendar(newOperation.getOpDateTime()));
+
+		currentWallet.setVersion(++currentVersion);
 		updateCurrentWallet();
 	}
 
@@ -89,8 +86,8 @@ public class WalletManager {
 		return allOperations;
 	}
 	
-	public Long getInUse() {
-		return inUse;
+	public Long getAvailable() {
+		return available;
 	}
 	
 	public Long getPostponed() {
@@ -101,8 +98,11 @@ public class WalletManager {
 		return income;
 	}
 	
-	public Long getExpense() {
-		return expense;
+	public Long getExpenses() {
+		return expenses;
 	}
 	
+	public Calendar getCurrentCalendar() {
+		return now;
+	}
 }

@@ -1,18 +1,13 @@
 package org.mabysh.familybudget.backend.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
 
 @SuppressWarnings("serial")
@@ -21,9 +16,8 @@ import javax.persistence.Version;
 public class Wallet implements Serializable, Cloneable{
 	
 	@Id
-	private Long id;
+	private Long walletId;
 	
-	@Version
 	private Long version;
 	
 	@OneToOne
@@ -31,13 +25,13 @@ public class Wallet implements Serializable, Cloneable{
 	private Account account;
 	
 	public Long getId() {
-		return id;
+		return walletId;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.walletId = id;
 	}
-
+	
 	public Account getWalletAccount() {
 		return account;
 	}
@@ -50,6 +44,10 @@ public class Wallet implements Serializable, Cloneable{
 	public Long getVersion() {
 		return version;
 	}
+	
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 
 	@Override
 	public String toString() {
@@ -57,7 +55,7 @@ public class Wallet implements Serializable, Cloneable{
 	}
 	
 	public boolean isPersisted() {
-		return id != null;
+		return walletId != null;
 	}
 
 	@Override
@@ -65,12 +63,12 @@ public class Wallet implements Serializable, Cloneable{
         if (this == obj) {
             return true;
         }
-        if(this.id == null) {
+        if(this.walletId == null) {
             return false;
         }
 
         if (obj instanceof Wallet && obj.getClass().equals(getClass())) {
-            return this.id.equals(((Wallet) obj).getId());
+            return this.walletId.equals(((Wallet) obj).getId());
         }
 
         return false;
@@ -79,12 +77,13 @@ public class Wallet implements Serializable, Cloneable{
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 43 * hash + Objects.hashCode(this.id);
+        hash = 43 * hash + Objects.hashCode(this.walletId);
         return hash;
 
 	}
     
     public Wallet() {
+    	this.version = 0L;
     }
 	
 }

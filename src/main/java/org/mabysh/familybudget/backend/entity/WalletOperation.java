@@ -2,7 +2,6 @@ package org.mabysh.familybudget.backend.entity;
 
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,12 +24,17 @@ public class WalletOperation implements Serializable, Cloneable{
     private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "account_id")
-	private Account account;
+	@JoinColumn(name = "walletId")
+	private Wallet wallet;
 	
 	private OperationType opType;
 	
 	private Long amount;
+	
+	private Long available;	//these four are balance values at
+	private Long postponed;	//the moment of this operation
+	private Long income;		//
+	private Long expenses;		//
 	
 	@Column(name = "date_time")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -50,6 +54,38 @@ public class WalletOperation implements Serializable, Cloneable{
 		return amount;
 	}
 	
+	public Long getAvailabe() {
+		return available;
+	}
+	
+	public void setAvailable(Long available) {
+		this.available = available;
+	}
+
+	public Long getIncome() {
+		return income;
+	}
+	
+	public void setIncome(Long income) {
+		this.income = income;
+	}
+	
+	public Long getPostponed() {
+		return postponed;
+	}
+	
+	public void setPostponed(Long postponed) {
+		this.postponed = postponed;
+	}
+
+	public Long getExpenses() {
+		return expenses;
+	}
+	
+	public void setExpenses(Long expenses) {
+		this.expenses = expenses;
+	}
+
 	public Calendar getOpDateTime() {
 		return opDateTime;
 	}
@@ -58,12 +94,12 @@ public class WalletOperation implements Serializable, Cloneable{
 		this.opDateTime = c;
 	}
 
-	public Account getAccount() {
-		return account;
+	public Wallet getWallet() {
+		return wallet;
 	}
 
-	public void setAccount(Account account) {
-		this.account = account;
+	public void setWallet(Wallet wallet) {
+		this.wallet = wallet;
 	}
 
 	public OperationType getOpType() {
@@ -77,34 +113,36 @@ public class WalletOperation implements Serializable, Cloneable{
 	public boolean isPersisted() {
 		return id != null;
 	}
-
-	@Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if(this.id == null) {
-            return false;
-        }
-
-        if (obj instanceof WalletOperation && obj.getClass().equals(getClass())) {
-            return this.id.equals(((WalletOperation) obj).getId());
-        }
-
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 43 * hash + Objects.hashCode(this.id);
-        return hash;
-
-	}
     
     @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((opDateTime == null) ? 0 : opDateTime.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		WalletOperation other = (WalletOperation) obj;
+		if (opDateTime == null) {
+			if (other.opDateTime != null)
+				return false;
+		} else if (!opDateTime.equals(other.opDateTime))
+			return false;
+		return true;
+	}
+
+	@Override
     public String toString() {
-    	return "Operation id: " + getId() + " | type: " + getOpType() + " | amount: " + getAmount()
+    	return "Operation id: " + getId() == null ? "Not Persisted" : getId()
+    		+ " | type: " + getOpType() + " | amount: " + getAmount()
     		+ " | date/time: " + opDateTime.getTime();
     }
     
