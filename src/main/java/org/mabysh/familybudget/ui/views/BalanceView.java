@@ -13,6 +13,7 @@ import com.byteowls.vaadin.chartjs.config.LineChartConfig;
 import com.byteowls.vaadin.chartjs.data.LineDataset;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
@@ -36,6 +37,7 @@ public class BalanceView extends VerticalLayout implements View {
 	private Label wallet;
 	private Label income;
 	private Label expenses;
+	private Label period;
 	
 	private Long oldWalletVersion = -1L;
 	private LineChartConfig availChartConfig;
@@ -50,15 +52,17 @@ public class BalanceView extends VerticalLayout implements View {
 		wallet = new Label();
 		income = new Label();
 		expenses = new Label();
+		period = new Label();
+		period.setContentMode(ContentMode.PREFORMATTED);
 		
 		now = walletManager.getCurrentCalendar();
-	
-		availChartConfig = new LineChartConfig();
-		availChartConfig.data()
-			.addDataset(new LineDataset().label("Money available").fill(false))
-			.la
+//	
+//		availChartConfig = new LineChartConfig();
+//		availChartConfig.data()
+//			.addDataset(new LineDataset().label("Money available").fill(false))
+//			.la
 			
-		addComponents(l1, wallet, income, expenses);
+		addComponents(l1, wallet, income, expenses, period);
 		redrawBalanceView();
 	}
 
@@ -70,7 +74,7 @@ public class BalanceView extends VerticalLayout implements View {
 			wallet.setValue("Available: " + walletManager.getAvailable());
 			income.setValue("Income: " + walletManager.getIncome());
 			expenses.setValue("Expenses: " + walletManager.getExpenses());
-			
+			period.setValue(walletManager.getPeriod());
 		}	
 	}
 

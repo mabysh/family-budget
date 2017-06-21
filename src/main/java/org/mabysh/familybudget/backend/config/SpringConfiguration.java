@@ -43,7 +43,7 @@ public class SpringConfiguration {
 		emFactory.setJpaDialect(jpaDialect());
 		emFactory.setPersistenceUnitManager(unitManager());
 		Properties jpaProp = new Properties();
-		jpaProp.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+		jpaProp.setProperty("hibernate.hbm2ddl.auto", "validate");
 		jpaProp.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
 		jpaProp.setProperty("hibernate.show_sql", "true");
 		emFactory.setJpaProperties(jpaProp);
