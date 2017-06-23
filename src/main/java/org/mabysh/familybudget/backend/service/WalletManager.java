@@ -72,6 +72,8 @@ public class WalletManager {
 		for (WalletOperation op : allOperations) {
 			addOperationToHistory(op);
 		}
+		addOperationToHistory(new WalletOperation(0L, OperationType.UNDEFINED));
+		
 		fillHistoryEmptyDays();
 	}
 	
@@ -114,9 +116,6 @@ public class WalletManager {
 		day[1] = postponed;
 		day[2] = income;
 		day[3] = expenses;
-		
-		fillHistoryEmptyDays();			//TODO find a way to optimize this
-	
 	}
 	
 	private void fillHistoryEmptyDays() {

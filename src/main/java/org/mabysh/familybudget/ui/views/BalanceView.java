@@ -149,6 +149,7 @@ public class BalanceView extends VerticalLayout implements View {
 				.ticks()
 					.suggestedMin(-10)
 					.suggestedMax(250)
+					.autoSkip(true)
 					.and()
 				.position(Position.RIGHT))
 		.and()
@@ -181,7 +182,8 @@ public class BalanceView extends VerticalLayout implements View {
             
             availChart = new ChartJs(availChartConfig);
             availChart.setJsLoggingEnabled(true);
-            availChart.setWidth(50, Unit.PERCENTAGE);
+            availChart.setWidth(1000, Unit.PIXELS);
+            availChart.setHeight(250, Unit.PIXELS);
 			
 
 			wallet.setValue("Available: " + walletManager.getAvailable());

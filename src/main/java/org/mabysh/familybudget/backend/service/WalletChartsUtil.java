@@ -17,13 +17,14 @@ public class WalletChartsUtil {
 	
 	private HashMap<Integer, HashMap<Integer, ArrayList<Long[]>>> history;
 
-	private ArrayList<Double> availableList;
-	private ArrayList<Double> postponedList;
-	private ArrayList<Double> incomeList;
-	private ArrayList<Double> expensesList;
-	private ArrayList<String> labelList;
+	private List<Double> availableList;
+	private List<Double> postponedList;
+	private List<Double> incomeList;
+	private List<Double> expensesList;
+	private List<String> labelList;
 	
 	public void calculateSelectedPeriod(Integer year, Integer month) {
+		Calendar now = Calendar.getInstance();
 		history = walletManager.getHistory();
 		
 		ArrayList<Long[]> monthList = history.get(year).get(month);
@@ -46,25 +47,33 @@ public class WalletChartsUtil {
 			incomeList.add(monthList.get(i - 1)[2] - inc * 1.0);
 			expensesList.add(monthList.get(i - 1)[3] - expens * 1.0);
 		}
+		if (year == now.get(Calendar.YEAR) && month == now.get(Calendar.MONTH)) {
+			Integer day = now.get(Calendar.DAY_OF_MONTH);
+			availableList = availableList.subList(0, day);
+			postponedList = postponedList.subList(0, day);
+			incomeList = incomeList.subList(0, day);
+			expensesList = expensesList.subList(0, day);
+			labelList = labelList.subList(0, day);
+		}
 	}
 	
-	public ArrayList<Double> getAvailableList() {
+	public List<Double> getAvailableList() {
 		return availableList;
 	}
 	
-	public ArrayList<Double> getPostponedList() {
+	public List<Double> getPostponedList() {
 		return postponedList;
 	}
 	
-	public ArrayList<Double> getIncomeList() {
+	public List<Double> getIncomeList() {
 		return incomeList;
 	}
 	
-	public ArrayList<Double> getExpensesList() {
+	public List<Double> getExpensesList() {
 		return expensesList;
 	}
 	
-	public ArrayList<String> getLabelList() {
+	public List<String> getLabelList() {
 		return labelList;
 	}
 
