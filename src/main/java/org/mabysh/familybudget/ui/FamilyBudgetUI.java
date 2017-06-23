@@ -1,7 +1,12 @@
 package org.mabysh.familybudget.ui;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import org.mabysh.familybudget.backend.entity.Account;
+import org.mabysh.familybudget.backend.entity.OperationType;
 import org.mabysh.familybudget.backend.entity.Wallet;
+import org.mabysh.familybudget.backend.entity.WalletOperation;
 import org.mabysh.familybudget.backend.service.AccountService;
 import org.mabysh.familybudget.backend.service.WalletManager;
 import org.mabysh.familybudget.ui.views.BalanceView;
@@ -40,7 +45,10 @@ public class FamilyBudgetUI extends UI implements ViewDisplay {
 	
 	@Autowired
 	private WalletManager walletManager;
-	
+			
+	@Autowired
+	private AccountService accountService;
+
 	private Account currentAccount;
 	
 	private Navigator navigator;
@@ -57,6 +65,8 @@ public class FamilyBudgetUI extends UI implements ViewDisplay {
     	setUpRootPanel();
     	
     	setContent(rootPanel);
+    	
+    	initTestData();
     
     	accounts.click();
     }
@@ -169,6 +179,77 @@ public class FamilyBudgetUI extends UI implements ViewDisplay {
 			rootPanel.setSplitPosition(0, Unit.PIXELS);
 		}
 			rootPanel.getFirstComponent().setVisible(b);
+	}
+	
+	private void initTestData() {
+		Account max = new Account();
+		max.setLogin("max");
+		max.setPassword("123");
+		accountService.saveAccount(max);
+		max = accountService.findAccountByLogin(max.getLogin());
+		Wallet wal = new Wallet();
+		wal.setWalletAccount(max);
+		accountService.saveWallet(wal);
+		wal = accountService.findWallet(max.getId());
+		
+		Calendar cal = new GregorianCalendar(2016, 5, 4, 8, 13);
+		addTestOperation(50L, OperationType.DEPOSIT, cal, wal);
+		cal = new GregorianCalendar(2016, 5, 5, 8, 14);
+		addTestOperation(10L, OperationType.WITHDRAW, cal, wal);
+		cal = new GregorianCalendar(2016, 5, 6, 8, 15);
+		addTestOperation(7L, OperationType.WITHDRAW, cal, wal);
+		cal = new GregorianCalendar(2016, 5, 7, 10, 15);
+		addTestOperation(20L, OperationType.POSTPONE, cal, wal);
+		cal = new GregorianCalendar(2016, 5, 8, 10, 16);
+		addTestOperation(10L, OperationType.WITHDRAW, cal, wal);
+		cal = new GregorianCalendar(2016, 5, 12, 10, 17);
+		addTestOperation(100L, OperationType.DEPOSIT, cal, wal);
+		cal = new GregorianCalendar(2016, 5, 13, 10, 17);
+		addTestOperation(15L, OperationType.WITHDRAW, cal, wal);
+		
+		cal = new GregorianCalendar(2016, 6, 5, 8, 14);
+		addTestOperation(10L, OperationType.WITHDRAW, cal, wal);
+		cal = new GregorianCalendar(2016, 6, 6, 8, 15);
+		addTestOperation(17L, OperationType.WITHDRAW, cal, wal);
+		cal = new GregorianCalendar(2016, 6, 7, 10, 15);
+		addTestOperation(13L, OperationType.POSTPONE, cal, wal);
+		cal = new GregorianCalendar(2016, 6, 8, 10, 16);
+		addTestOperation(10L, OperationType.WITHDRAW, cal, wal);
+		cal = new GregorianCalendar(2016, 6, 12, 10, 17);
+		addTestOperation(19L, OperationType.DEPOSIT, cal, wal);
+		cal = new GregorianCalendar(2016, 6, 13, 10, 17);
+		addTestOperation(15L, OperationType.WITHDRAW, cal, wal);
+
+		cal = new GregorianCalendar(2017, 2, 5, 8, 14);
+		addTestOperation(36L, OperationType.DEPOSIT, cal, wal);
+		cal = new GregorianCalendar(2017, 2, 6, 8, 15);
+		addTestOperation(17L, OperationType.WITHDRAW, cal, wal);
+		cal = new GregorianCalendar(2017, 2, 7, 10, 15);
+		addTestOperation(13L, OperationType.POSTPONE, cal, wal);
+		cal = new GregorianCalendar(2017, 2, 8, 10, 16);
+		addTestOperation(10L, OperationType.WITHDRAW, cal, wal);
+		cal = new GregorianCalendar(2017, 2, 12, 10, 17);
+		addTestOperation(190L, OperationType.DEPOSIT, cal, wal);
+		cal = new GregorianCalendar(2017, 2, 13, 10, 17);
+		addTestOperation(15L, OperationType.WITHDRAW, cal, wal);
+
+		cal = new GregorianCalendar(2017, 4, 5, 8, 14);
+		addTestOperation(36L, OperationType.WITHDRAW, cal, wal);
+		cal = new GregorianCalendar(2017, 4, 6, 8, 15);
+		addTestOperation(17L, OperationType.WITHDRAW, cal, wal);
+		cal = new GregorianCalendar(2017, 4, 7, 10, 15);
+		addTestOperation(13L, OperationType.POSTPONE, cal, wal);
+		cal = new GregorianCalendar(2017, 4, 8, 10, 16);
+		addTestOperation(10L, OperationType.WITHDRAW, cal, wal);
+		cal = new GregorianCalendar(2017, 4, 12, 10, 17);
+		addTestOperation(15L, OperationType.WITHDRAW, cal, wal);
+
+	}
+	
+	private void addTestOperation(Long amount, OperationType opType, Calendar cal, Wallet wal) {
+		WalletOperation newOperation = new WalletOperation(amount, opType, cal);
+		newOperation.setWallet(wal);
+		accountService.saveWalletOperation(newOperation);
 	}
 
 }

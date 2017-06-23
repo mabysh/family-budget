@@ -82,6 +82,17 @@ public class AccountService {
 		}
 	}
 	
+	@Transactional
+	public List<WalletOperation> findWalletOperationsByDate(Integer year, Integer month, Integer day) {
+		List<WalletOperation> result = em.createQuery("SELECT o FROM WalletOperation o WHERE"
+				+ " o.year=:year AND o.month=:month AND o.day=:day", WalletOperation.class)
+				.setParameter("year", year)
+				.setParameter("month", month)
+				.setParameter("day", day)
+				.getResultList();
+		return result;
+	}
+	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void saveAccount(Account account) {
 		Account acc = em.merge(account);

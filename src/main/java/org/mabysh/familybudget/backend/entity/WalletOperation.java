@@ -31,10 +31,9 @@ public class WalletOperation implements Serializable, Cloneable{
 	
 	private Long amount;
 	
-	private Long available;	//these four are balance values at
-	private Long postponed;	//the moment of this operation
-	private Long income;		//
-	private Long expenses;		//
+	private Integer year;
+	private Integer month;
+	private Integer day;
 	
 	@Column(name = "date_time")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -54,36 +53,28 @@ public class WalletOperation implements Serializable, Cloneable{
 		return amount;
 	}
 	
-	public Long getAvailabe() {
-		return available;
-	}
-	
-	public void setAvailable(Long available) {
-		this.available = available;
+	public void setYear(Integer year) {
+		this.year = year;
 	}
 
-	public Long getIncome() {
-		return income;
+	public Integer getYear() {
+		return year;
 	}
 	
-	public void setIncome(Long income) {
-		this.income = income;
-	}
-	
-	public Long getPostponed() {
-		return postponed;
-	}
-	
-	public void setPostponed(Long postponed) {
-		this.postponed = postponed;
+	public Integer getMonth() {
+		return month;
 	}
 
-	public Long getExpenses() {
-		return expenses;
+	public void setMonth(Integer month) {
+		this.month = month;
 	}
-	
-	public void setExpenses(Long expenses) {
-		this.expenses = expenses;
+
+	public Integer getDay() {
+		return day;
+	}
+
+	public void setDay(Integer day) {
+		this.day = day;
 	}
 
 	public Calendar getOpDateTime() {
@@ -92,6 +83,9 @@ public class WalletOperation implements Serializable, Cloneable{
 	
 	public void setOpDateTime(Calendar c) {
 		this.opDateTime = c;
+		setYear(opDateTime.get(Calendar.YEAR));
+    	setMonth(opDateTime.get(Calendar.MONTH));
+    	setDay(opDateTime.get(Calendar.DAY_OF_MONTH));
 	}
 
 	public Wallet getWallet() {
@@ -149,12 +143,18 @@ public class WalletOperation implements Serializable, Cloneable{
     public WalletOperation(Long amount, OperationType opType) {
     	this.amount = amount;
     	this.opType = opType;
-    	this.opDateTime = Calendar.getInstance();
+    	setOpDateTime(Calendar.getInstance());
     }
     
     public WalletOperation() {
     	this.opType = OperationType.UNDEFINED;
     	this.amount = 0L;
-    	this.opDateTime = Calendar.getInstance();
+    	setOpDateTime(Calendar.getInstance());
+    }
+    
+    public WalletOperation(Long amount, OperationType opType, Calendar cal) {
+    	this.amount = amount;
+    	this.opType = opType;
+    	setOpDateTime(cal);
     }
 }

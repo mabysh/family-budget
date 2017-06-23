@@ -3,6 +3,7 @@ package org.mabysh.familybudget.backend.config;
 import java.util.Properties;
 
 import org.mabysh.familybudget.backend.service.AccountService;
+import org.mabysh.familybudget.backend.service.WalletChartsUtil;
 import org.mabysh.familybudget.backend.service.WalletManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -43,7 +44,7 @@ public class SpringConfiguration {
 		emFactory.setJpaDialect(jpaDialect());
 		emFactory.setPersistenceUnitManager(unitManager());
 		Properties jpaProp = new Properties();
-		jpaProp.setProperty("hibernate.hbm2ddl.auto", "validate");
+		jpaProp.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 		jpaProp.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
 		jpaProp.setProperty("hibernate.show_sql", "true");
 		emFactory.setJpaProperties(jpaProp);
@@ -91,7 +92,13 @@ public class SpringConfiguration {
 		return new AccountService();
 	}
 	
-	@Bean WalletManager walletManager() {
+	@Bean
+	public WalletManager walletManager() {
 		return new WalletManager();
+	}
+	
+	@Bean
+	public WalletChartsUtil chartsUtil() {
+		return new WalletChartsUtil();
 	}
 }
